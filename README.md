@@ -1,5 +1,5 @@
 
-<p><img src="https://eu.ui-avatars.com/api/?name=Najm+Njeim?size=150" width="150"/></p>
+<p><img src="https://eu.ui-avatars.com/api/?name=Najm+Njeim?size=100" width="100"/></p>
 
 ## Respond Factory
 
@@ -9,15 +9,6 @@ A Laravel response helper methods.
 
 You can install the package via composer:
 ```
-Add to composer.json
-
- "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/nnjeim/respond.git"
-        }
-    ]
-
 composer require nnjeim/respond
 ```
 
@@ -28,7 +19,7 @@ composer require nnjeim/respond
 use Nnjeim\Fetch\Fetch;
 use Nnjeim\Respond\Respond;
 
-['response' => $response, 'status' => $status] = Fetch::setBaseUri('https://nnjeim.com/api')->get('countries');
+['response' => $response, 'status' => $status] = Fetch::setBaseUri('https://someapi.com/')->get('countries');
 
     if ($status === 200 && $response->success) {
 
@@ -44,7 +35,9 @@ use Nnjeim\Respond\Respond;
 ```
 use Nnjeim\Respond\RespondHelper;
 
-private $respond;
+private RespondHelper $respond;
+private array $data;
+private bool $success;
 
 public function __construct(RespondHelper $respond) {
 
@@ -53,15 +46,16 @@ public function __construct(RespondHelper $respond) {
 .
 .
 .
-$response = $this->respond
+$respond = $this
+        ->respond
         ->setMessage('countries')
         ->toJson();
 
-if ($response->success) {
-    return $response->withSuccess($response->data)
+if ($this->success) {
+    return $respond->withSuccess($data)
 }
 
-return $response->withErrors();
+return $respond->withErrors();
 ```
 
 ## Methods
