@@ -1,0 +1,54 @@
+{
+    "name": "nnjeim/respond",
+    "description": "Laravel response helpers",
+    "keywords": [
+        "nnjeim",
+        "respond"
+    ],
+    "homepage": "https://github.com/nnjeim/respond.git",
+    "license": "MIT",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Najm Njeim",
+            "email": "najm@njeim.net",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "orchestra/testbench": ">=v4.0.0",
+        "phpunit/phpunit": ">=8.5.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nnjeim\\Respond\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Nnjeim\\Respond\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Nnjeim\\Respond\\RespondServiceProvider"
+            ],
+            "aliases": {
+                "Respond": "Nnjeim\\Respond\\Respond"
+            }
+        }
+    }
+}
