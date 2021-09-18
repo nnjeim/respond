@@ -1,13 +1,10 @@
 {
     "name": "nnjeim/respond",
     "description": "Laravel response helpers",
-    "keywords": [
-        "nnjeim",
-        "respond"
-    ],
+    "keywords": [ "laravel", "lumen", "response", "responder" ],
     "homepage": "https://github.com/nnjeim/respond.git",
     "license": "MIT",
-    "type": "project",
+    "type": "laravel-package",
     "authors": [
         {
             "name": "Najm Njeim",
