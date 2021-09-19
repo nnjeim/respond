@@ -2,7 +2,11 @@
 
 namespace Nnjeim\Respond;
 
+use Nnjeim\Respond\RespondException;
+
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Str;
+use Exception;
 
 abstract class RespondBuilder
 {
@@ -27,18 +31,68 @@ abstract class RespondBuilder
 	}
 
 	/**
+	 * @param $method
+	 * @param  null  $args
+	 * @return array|JsonResponse
+	 * @throws Exception
+	 */
+	public function __call($method, $args = null)
+	{
+		if (Str::contains($method, 'with')) {
+
+			return $this->withResponder($method, ...$args);
+		}
+
+		throw RespondException::methodNotFoundException($method);
+	}
+
+	/**
+	 * @param  string  $method
+	 * @param  null  $args
+	 * @return array|JsonResponse
+	 * @throws Exception
+	 */
+	public function withResponder(string $method, $args = null) {
+
+		$key = strtolower(Str::after($method, 'with'));
+
+		$responses = config('respond.responses');
+
+		if (! array_key_exists($key, $responses)) {
+			throw RespondException::methodNotFoundException($method);
+		}
+
+		['success' => $success, 'message' => $message, 'status' => $status]
+			= $responses[$key]
+			+ ['message' => null];
+
+		/*-- set success --*/
+		$this->success = $success;
+		/*-- set message --*/
+		if (isset($message)) {
+			$this->message ??= trans("respond::$message");
+		}
+		/*-- set status --*/
+		$this->status ??= $status;
+
+		return $this->respond();
+	}
+
+	/**
 	 * @return array|JsonResponse
 	 */
 	public function respond()
 	{
-		$this->formatResponse();
+		$this->formResponse();
 
 		['response' => $response, 'status' => $status] = $this->attributes;
 
-		return ($this->json === null) ? compact('response', 'status') : response()->json($response, $status);
+		return ($this->json === null && !config('respond.toJson'))
+			? compact('response', 'status')
+			: response()->json($response, $status);
 	}
 
-	private function formatResponse(): void
+	private function formResponse(): void
 	{
 		$response = [
 			'success' => false,
