@@ -21,14 +21,14 @@ use Nnjeim\Respond\Respond;
 
 ['response' => $response, 'status' => $status] = Fetch::setBaseUri('https://someapi.com/')->get('countries');
 
-    if ($status === 200 && $response->success) {
+	if ($status === 200 && $response->success) {
 
-        return Respond::setMessage('countries')
-            ->toJson()
-            ->withSuccess($response->data);
-    }
+		return Respond::toJson()
+			->setMessage('countries')
+			->withSuccess($response->data);
+	}
 
-    abort(400);
+	abort(400);
 ```
 ##### RespondHelper Instantiation
 
@@ -39,20 +39,21 @@ private RespondHelper $respond;
 private array $data;
 private bool $success;
 
-public function __construct(RespondHelper $respond) {
-
-    $this->respond = $respond;
+public function __construct(RespondHelper $respond)
+{
+	$this->respond = $respond;
 }
 .
 .
 .
 $respond = $this
-        ->respond
-        ->setMessage('countries')
-        ->toJson();
+		->respond
+		->setMessage('countries')
+		->toJson();
 
-if ($this->success) {
-    return $respond->withSuccess($data)
+if ($this->success)
+{
+	return $respond->withSuccess($data)
 }
 
 return $respond->withErrors();
@@ -139,7 +140,7 @@ Record not found error. The default response status code is 404.
 
 ##### Respond with not authenticated
 ```
-Not authorized reponse. The default response status code is 401.
+Not authenticated reponse. The default response status code is 401.
 
 @return array       withNotAuthenticated($message = null)
 ```
@@ -156,15 +157,15 @@ Not authorized reponse. The default response status code is 403.
 ```
 @return array
 
-    [
-        'response' => [
-            'success' => true,
-            'message' => 'message',
-            'data' => [],
-            'errors' => [],
-        ],
-        'status' => 200,
-    ];
+	[
+		'response' => [
+			'success' => true,
+			'message' => 'message',
+			'data' => [],
+			'errors' => [],
+		],
+		'status' => 200,
+	];
 ```
 ## Testing
 

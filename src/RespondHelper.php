@@ -2,84 +2,94 @@
 
 namespace Nnjeim\Respond;
 
-class RespondHelper extends RespondFactory {
+use Nnjeim\Respond\RespondBuilder;
+use Nnjeim\Respond\RespondInterface;
 
-    const HTTP_OK = 200;
-    const HTTP_CREATED = 201;
-    const HTTP_ACCEPTED = 202;
-    const HTTP_NO_CONTENT = 204;
-    const HTTP_UNAUTHORIZED = 401;
-    const HTTP_FORBIDDEN = 403;
-    const HTTP_NOT_FOUND = 404;
-    const HTTP_UNPROCESSABLE_ENTITY = 422;
-    const HTTP_INTERNAL_SERVER_ERROR = 500;
-    /**
-     * @param $code
-     * @return $this
-     */
-    public function setStatusCode(int $code) {
+use Illuminate\Http\JsonResponse;
 
+class RespondHelper extends RespondBuilder implements RespondInterface {
+
+    public const HTTP_OK = 200;
+    public const HTTP_CREATED = 201;
+    public const HTTP_ACCEPTED = 202;
+    public const HTTP_NO_CONTENT = 204;
+    public const HTTP_UNAUTHORIZED = 401;
+    public const HTTP_FORBIDDEN = 403;
+    public const HTTP_NOT_FOUND = 404;
+    public const HTTP_UNPROCESSABLE_ENTITY = 422;
+    public const HTTP_INTERNAL_SERVER_ERROR = 500;
+
+	/**
+	 * @param  string  $message
+	 * @return $this
+	 */
+	public function setMessage(string $message): self
+	{
+		$this->message = $message;
+
+		return $this;
+	}
+
+	/**
+	 * @param $data
+	 * @return $this
+	 */
+	public function setData($data): self
+	{
+		$this->data = $data;
+
+		return $this;
+	}
+
+	/**
+	 * @param  array  $meta
+	 * @return $this
+	 */
+	public function setMeta(array $meta): self
+	{
+		$this->meta = $meta;
+
+		return $this;
+	}
+
+	/**
+	 * @param  array  $errors
+	 * @return $this
+	 */
+	public function setErrors(array $errors): self
+	{
+		$this->errors = $errors;
+
+		return $this;
+	}
+
+	/**
+	 * @param  int  $code
+	 * @return $this
+	 */
+	public function setStatusCode(int $code): self
+    {
         $this->status = $code;
 
         return $this;
     }
 
-    /**
-     * @param  string  $message
-     * @return $this
-     */
-    public function setMessage(string $message) {
-
-        $this->message = $message;
-
-        return $this;
-    }
-
-    /**
-     * @param  array  $meta
-     * @return $this
-     */
-    public function setMeta(array $meta) {
-
-        $this->meta = $meta;
-
-        return $this;
-    }
-
-    /**
-     * @param  $data
-     * @return $this
-     */
-    public function setData($data) {
-
-        $this->data = $data;
-
-        return $this;
-    }
-
-    /**
-     * @param  array  $errors
-     * @return $this
-     */
-    public function setErrors(array $errors) {
-
-        $this->errors = $errors;
-
-        return $this;
-    }
-
-    public function toJson() {
-
+	/**
+	 * @return $this
+	 */
+	public function toJson(): self
+    {
         $this->json = true;
 
         return $this;
     }
-    /**
-     * @param  array|null  $data
-     * @return array
-     */
-    public function withSuccess($data = null) {
 
+	/**
+	 * @param  null  $data
+	 * @return array|JsonResponse
+	 */
+	public function withSuccess($data = null)
+    {
         $this->success = true;
 
         $this->status ??= self::HTTP_OK;
@@ -92,12 +102,12 @@ class RespondHelper extends RespondFactory {
         return $this->respond();
     }
 
-    /**
-     * @param  array|null  $errors
-     * @return array
-     */
-    public function withErrors(?array $errors = null) {
-
+	/**
+	 * @param  array|null  $errors
+	 * @return array|JsonResponse
+	 */
+	public function withErrors(?array $errors = null)
+    {
         $this->success = false;
 
         $this->status ??= self::HTTP_UNPROCESSABLE_ENTITY;
@@ -112,11 +122,11 @@ class RespondHelper extends RespondFactory {
         return $this->respond();
     }
 
-    /**
-     * @return array
-     */
-    public function withNoContent() {
-
+	/**
+	 * @return array|JsonResponse
+	 */
+	public function withNoContent()
+    {
         $this->success = true;
 
         $this->status ??= self::HTTP_NO_CONTENT;
@@ -128,11 +138,11 @@ class RespondHelper extends RespondFactory {
         return $this->respond();
     }
 
-    /**
-     * @return array
-     */
-    public function withServerError() {
-
+	/**
+	 * @return array|JsonResponse
+	 */
+	public function withServerError()
+    {
         $this->success = false;
 
         $this->status ??= self::HTTP_INTERNAL_SERVER_ERROR;
@@ -144,13 +154,13 @@ class RespondHelper extends RespondFactory {
         return $this->respond();
     }
 
-    /**
-     * @param  string|null  $attribute
-     * @param  bool  $plural
-     * @return array
-     */
-    public function withNotFound(?string $attribute = null, bool $plural = true) {
-
+	/**
+	 * @param  string|null  $attribute
+	 * @param  bool  $plural
+	 * @return array|JsonResponse
+	 */
+	public function withNotFound(?string $attribute = null, bool $plural = true)
+    {
         $this->success = false;
 
         $this->status ??= self::HTTP_NOT_FOUND;
@@ -166,11 +176,11 @@ class RespondHelper extends RespondFactory {
         return $this->respond();
     }
 
-    /**
-     * @return array
-     */
-    public function withNotAuthenticated() {
-
+	/**
+	 * @return array|JsonResponse
+	 */
+	public function withNotAuthenticated()
+    {
         $this->success = false;
 
         $this->status ??= self::HTTP_UNAUTHORIZED;
@@ -180,11 +190,11 @@ class RespondHelper extends RespondFactory {
         return $this->respond();
     }
 
-    /**
-     * @return array
-     */
-    public function withNotAuthorized() {
-
+	/**
+	 * @return array|JsonResponse
+	 */
+	public function withNotAuthorized()
+    {
         $this->success = false;
 
         $this->status ??= self::HTTP_FORBIDDEN;

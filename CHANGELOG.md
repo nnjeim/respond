@@ -8,5 +8,8 @@ All notable changes will be documented in this file
 - adjusted translations and addition of respond with not authenticated helper.
 - removed dependency on the Http Response facade.
 
+## 1.0.2 - 2021-09-19
+- general refactoring
+
 
 
