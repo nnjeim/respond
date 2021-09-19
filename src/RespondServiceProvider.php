@@ -17,6 +17,15 @@ class RespondServiceProvider extends ServiceProvider
 	{
 		// Load translations
 		$this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'respond');
+
+		// Load the configurations
+		$this->mergeConfigFrom(__DIR__ . '/../config/respond.php', 'respond');
+
+		if ($this->app->runningInConsole()) {
+			$this->publishes([
+				__DIR__ . '/../config/respond.php' => config_path('respond.php'),
+			]);
+		}
 	}
 
 	/**

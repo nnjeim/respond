@@ -11,5 +11,8 @@ All notable changes will be documented in this file
 ## 1.0.2 - 2021-09-19
 - general refactoring
 
+## 1.1.0 - 2021-09-19
+- Addition of the helpers method withAccepted and withCreated.
+
 
 

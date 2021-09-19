@@ -12,6 +12,11 @@ You can install the package via composer:
 composer require nnjeim/respond
 ```
 
+## Configuration
+```
+php artisan vendor:publish --provider="Nnjeim\Respond\RespondServiceProvider"
+```
+
 ## Usage
 
 ##### Respond Facade
@@ -25,7 +30,8 @@ use Nnjeim\Respond\Respond;
 
 		return Respond::toJson()
 			->setMessage('countries')
-			->withSuccess($response->data);
+			->setData($response->data)
+			->withSuccess();
 	}
 
 	abort(400);
@@ -48,12 +54,13 @@ public function __construct(RespondHelper $respond)
 .
 $respond = $this
 		->respond
+		->toJson()
 		->setMessage('countries')
-		->toJson();
+		->setData($data);
 
 if ($this->success)
 {
-	return $respond->withSuccess($data)
+	return $respond->withSuccess()
 }
 
 return $respond->withErrors();
@@ -98,7 +105,9 @@ Sets the response errors.
 
 ##### respond in Json format
 ```
-returns an instance of Illuminate\Http\JsonResponse
+returns an instance of Illuminate\Http\JsonResponse  
+
+this method overwrites the config `toJson` set value.
 
 @return $this       toJson()
 ```
@@ -107,55 +116,69 @@ returns an instance of Illuminate\Http\JsonResponse
 ```
 On success response. The default response status code is 200.   
 
-@return $this       withSuccess(?array $data = null)
+@return array|JsonResponse       withSuccess()
+```
+
+##### Respond with created
+```
+On created response. The default response status code is 201.   
+
+@return array|JsonResponse       withCreated()
+```
+
+##### Respond with accepted
+```
+On accepted response. The default response status code is 202.   
+
+@return array|JsonResponse       withAccepted()
 ```
 
 ##### Respond with no content
 ```
 On success response with no results found. The default status code is 204
 
-@return $this       withNoContent()
+@return array|JsonResponse       withNoContent()
 ```
 
 #####  Respond with errors
 ```
 On error response. The default response status code is 422.   
 
-@return $this       withErrors(?array $errors = null)
+@return array|JsonResponse       withErrors(?array $errors = null)
 ```
 
 ##### Respond with server error
 ```
 On server error response. The default response status code is 500.   
 
-@return $this       withServerError()       
+@return array|JsonResponse       withServerError()       
 ```
 
 ##### Respond with not found
 ```
 Record not found error. The default response status code is 404.
 
-@return array       withNotFound(?string $attribute = null, bool $plural = true)
+@return array|JsonResponse       withNotFound()
 ```
 
 ##### Respond with not authenticated
 ```
 Not authenticated reponse. The default response status code is 401.
 
-@return array       withNotAuthenticated($message = null)
+@return array|JsonResponse       withNotAuthenticated()
 ```
 
 ##### Respond with not authorized
 ```
 Not authorized reponse. The default response status code is 403.
 
-@return array       withNotAuthorized($message = null)
+@return array|JsonResponse       withNotAuthorized()
 ```
 
 ## Respond
 
 ```
-@return array
+@return array|JsonResponse
 
 	[
 		'response' => [
