@@ -12,7 +12,11 @@ All notable changes will be documented in this file
 - general refactoring
 
 ## 1.1.0 - 2021-09-19
-- Addition of the helpers method withAccepted and withCreated.
+- Addition of the helpers method withAccepted and withCreated.  
+
+## 1.2.0 - 2021-09-20
+- Unit testing with 99% code coverage.
+- Possibility to add custom methods.
 
 
 

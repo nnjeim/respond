@@ -1,9 +1,8 @@
 
-<p><img src="https://eu.ui-avatars.com/api/?name=Najm+Njeim?size=100" width="100"/></p>
+<p><img src="https://eu.ui-avatars.com/api/?name=Najm+Njeim?size=100" width="100"/></p>  
 
-## Respond Factory
-
-A Laravel response helper methods.
+A Laravel response helper methods. The package `respond` provides a fluent syntax to form array or json responses.  
+In its configuration file, it allows the addition of custom methods.
 
 ## Installation
 
@@ -16,6 +15,11 @@ composer require nnjeim/respond
 ```
 php artisan vendor:publish --provider="Nnjeim\Respond\RespondServiceProvider"
 ```
+
+The `respond.php` config file allows:   
+- The presetting of the response format array/json.
+- The possibility to edit the response parameters.
+- The possibility to add custom methods.
 
 ## Usage
 
@@ -190,12 +194,38 @@ Not authorized reponse. The default response status code is 403.
 		'status' => 200,
 	];
 ```
+
+## Custom methods
+
+In the `respond.php` config file, in the responses array add an array entry where the key is name of the method in lower 
+case and the value contains the desired success, message and status params.
+
+```
+//example
+'methodnotallowed' => [
+    'success' => false,
+    'message' => 'the method not allowed!',
+    'status' => Response::HTTP_METHOD_NOT_ALLOWED,
+],
+```
+
+#### Usage
+
+`Respond::withMethodNotAllowed();`
+
 ## Testing
 
+The helpers and methods are tested with 99% coverage.  
+To run the tests.  
 ``` bash
+composer install
 composer test
 ```
 
+To run the coverage test.
+``` bash
+composer test-coverage
+```
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
